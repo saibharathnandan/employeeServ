@@ -1,4 +1,82 @@
 # employeeserv
+### DB Details
+This application uses H2 in-memory DB. During the Boot-up of application tables schema will be created using the file  [schema.sql](employeeservImplementation/src/main/resources/schema.sql)
+### Api's
+    Get Api
+    This endpoint retrieves the employee details based on id
+    Below is an example:
+	Url: http://localhost:8080/v1/bfs/employees/1
+	Method: GET
+	Response: {
+			"id": 1,
+			"first_name": "first-name",
+			"last_name": "last-name",
+			"date_of_birth": "27-04-1993",
+			"address": {
+				"line1": "line1",
+				"line2": "line2",
+				"city": "Hyderabad",
+				"state": "Telangana",
+				"country": "india",
+				"zipcode": "500085"
+			}
+	}
+---------------
+    POST Api
+    This Endpoint is used to create new Employee
+	Create Employee
+	Url: http://localhost:8080/v1/bfs/employees/create
+	Method: POST
+	Request: {
+		"first_name":"first-name",
+		"last_name": "last-name",
+		"date_of_birth":"20-04-1993",
+		"address":{
+			"line1":"line1",
+			"line2":"line2",
+			"city":"Hyderabad",
+			"state":"Telangana",
+			"country":"india",
+			"zipcode":"500085"
+			}
+		}
+	Response: {
+    		"id": 1,
+    		"first_name": "first-name",
+    		"last_name": "last-name",
+    		"date_of_birth": "27-04-1993",
+    		"address": {
+    			"line1": "line1",
+    			"line2": "line2",
+    			"city": "Hyderabad",
+    			"state": "Telangana",
+    			"country": "india",
+    			"zipcode": "500085"
+    		}
+    	}
+### Test Case
+All the test cases are included in the module `employeeservImplementation` even integration test cases.
+
+### Idempotency logic
+Employees will be considered same if first_name + last_name matches any record in the database
+### Constraints
+
+All the files are mandatory except line2 in address object, date_of_birth field should be of format dd-MM-yyyy
+
+###Responses
+incase of any validation failure or exceptions below is the format of response, with appropriate response codes
+    
+    Http Status Code: 400 Bad Request
+    Response:{
+            "error": "FirstName must not be null or empty",
+            "status": "BAD_REQUEST"
+            }
+### Validations
+For any validation failures returning `400 Bad request`.
+`200` in case employee created successfully or employee object is returned successfully.
+`404` in case employee requested is not found in the database
+`500` in case of any internal server errors
+
 
 ## Application Overview
 employeeserv is a spring boot rest application which would provide the CRUD operations for `Employee` resource.
